@@ -374,7 +374,7 @@
     </textarea>
     </br>
     <!-- create a canvas -->
-    <canvas id="graph1" height = "300" width = "1000" ></canvas>
+    <canvas id="graph1" height = "300" width = "500" ></canvas>
 
     <script>
         // grab the data from the document
@@ -520,27 +520,32 @@
         ctx.textAlign = "left"
         // indicate axis segmentation
         var xLines = 12.0;
-        var step  = (xRightBuffer - xLeftBuffer/xLines) + 1;
+        var step  = ((width -xRightBuffer) - xLeftBuffer)/xLines;
+        console.log(step)
         var i = 0
         //           ctx.setTransform(1, 0, 0, 1, 0, 0);
         do {
+          var x = xLeftBuffer + (i * step)
           // place month halfway between marks
           if (i > 0) {
             // find index matching the mark
-            var temp = i * Math.round(step)
+            var temp = i * Math.round(((width - xRightBuffer) - xLeftBuffer)/(xLines))
+            temp = dates.length/temp
+            console.log("temp", temp)
             var text = dates[temp]
+            console.log(text)
             // calculate the place of the text
             var place = x + step;
             text = text.slice(5, 7);
             length = ctx.measureText(text);
+            length = Math.ceil(length.width);
+            length = (length/2)*0
             console.log(length)
-            length = Math.ceil(length.width/2);
             // add the text
-            ctx.textAlign = "right"
+            ctx.textAlign = "middel"
             void ctx.fillText(text, place - length, height -  yDownBuffer + upLine + 5);
           }
           // draw the mark matching the text
-          var x = xLeftBuffer + i * (((width - xRightBuffer) - xLeftBuffer)/xLines)
           ctx.moveTo(x, (height - yDownBuffer - donwLine + 5));
           ctx.lineTo(x, (height - yDownBuffer + upLine + 5));
           ctx.stroke();
