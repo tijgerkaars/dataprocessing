@@ -15,6 +15,8 @@ with open('/users/jobber/documents/github/dataprocessing/problem3/homework/svg2/
             countrys[key].append(i[3])
             countrys[key].append(i[4])
 print "3", countrys
-with open('/users/jobber/documents/github/dataprocessing/problem3/homework/svg2/data.json') as g:
-    json.loads(countrys, g)
+with open('/users/jobber/documents/github/dataprocessing/problem3/homework/svg2/data.json', 'w') as g:
+    print "4", g
+    h = json.dump(countrys, g)
+    print "5", h
 print "end"
