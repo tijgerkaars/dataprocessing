@@ -1,3 +1,10 @@
+/***
+Jobber Bekkers
+10543988
+
+takes data from a JSON object and colours 
+elements matching them to reprecentative colour
+***/
 /* use this to test out your function */
 window.onload = function() {
   // adjusted savings: education expenditure(% of GNI)
