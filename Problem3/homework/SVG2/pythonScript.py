@@ -2,25 +2,26 @@ import csv
 import json
 # for my machine the entier pathway must be given
 with open('/users/jobber/documents/github/dataprocessing/problem3/homework/svg2/data.csv') as f:
-    print "f"
+    # read the csv file
     read = csv.reader(f)
-    print read, "\n\n start \n"
+    # initiate a dictionary
     countrys = dict()
-    print "1", read
+    # take all the lines from the csv file
     for i in read:
-        print "2 ", i[0], i[1], i[5]
+        # check if the info is usefull
         if (type(i[0]) == str and i[0] != ""):
+            # key is country name
             key = i[0]
+            # allow the value to be a list
             countrys.setdefault(key, [])
+            # set key:value0 to country code
             countrys[key].append(i[1])
+            # check if data is known on the country
             if (i[5] != '..'):
+                # set key:value1 to data(percentage)
                 countrys[key].append(i[5])
             else:
                 countrys[key].append("")
 
-print "3", countrys
 with open('/users/jobber/documents/github/dataprocessing/problem3/homework/svg2/data.json', 'w') as g:
-    print "4", g
     h = json.dump(countrys, g)
-    print "5", h
-print "end"
