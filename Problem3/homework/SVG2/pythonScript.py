@@ -1,3 +1,10 @@
+"""
+Jobber Bekkers
+10543988
+
+converts a scv file to a JSON file
+"""
+
 import csv
 import json
 # for my machine the entier pathway must be given
