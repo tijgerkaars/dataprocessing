@@ -252,83 +252,83 @@ window.onload = function() {
       ["ye", "YEM", "Yemen"],
       ["zm", "ZMB", "Zambia"],
       ["zw", "ZWE", "Zimbabwe"]];
-
+  // store the json
   var text = document.getElementById("JSON").innerHTML
+  // store the color sceme
   var colors = ['#edf8fb','#b2e2e2','#66c2a4','#2ca25f','#006d2c']
+  // set a default scale
   var scale = [0,100]
-/*
-  var doc = (document.getElementById('svg2985')).getElementsByClassName('landxx')
-  console.log("doc", doc)
-  docLength = Object.keys(doc).length
-
-  for (var i = 0; i < docLength; i = i + 1){
-    console.log(doc[i])
-    console.log("$$$", (doc[i].getElementsByTagName('title')))
-    //mapArray.push()
-  }
-  console.log(docLength, "\n", mapArray)
-*/
+  // parse the json
   var countries = JSON.parse(text);
+  // store the keys from the json
   var keys = Object.keys(countries);
-  var prop;
-  dataLength = Object.keys(countries).length
-  console.log(dataLength, "\n", countries)
-
+  //find the max value
   var max = 0
-  for (var i = 0; i < dataLength; i = i + 1) {
+  for (var i = 0; i < keys.length; i = i + 1) {
     for (var j = 0; j < country_codes.length; j = j + 1) {
+      // only look at countries that can be placed on the map
       if (keys[i] === country_codes[j][2]) {
-        //console.log(countries[keys[i]][1])
+        // if value > old max value = new max
         if (countries[keys[i]][1] > max){
           max = countries[keys[i]][1]
         }
       }
     }
   }
-
+  // set the scale to max
   scale[1] = max
+  //calculate the range of the scale
   range = scale[1] - scale[0]
-
   var match = []
-  for (var i = 0; i < dataLength; i = i + 1) {
+  // store the info on the matching countries
+  for (var i = 0; i < keys.length; i = i + 1) {
     for (var j = 0; j < country_codes.length; j = j + 1) {
+      // only look at countries that can be placed on the map
       if (keys[i] === country_codes[j][2]) {
-        console.log(country_codes[j][0], keys[i])
+        // place the countries in an array
         match.push([country_codes[j][0], countries[keys[i]][1]])
       }
     }
   }
-
+  // decide the color for the country
   for (var i = 0; i < match.length; i = i + 1) {
+    // calculate the fraction
     var temp = ((match[i][1])/range)
+    // if value falls out of range country will be red
     var color = "red"
+    // if country falls 0%-<25%
     if (temp >= 0 && temp <= 0.25) {
       color = colors[0]
     }
+    // if country falls in 25%-<50% class
     else if (temp > 0.25 && temp <= 0.50) {
       color = colors[1]
     }
+    // if country falls in 50%-<75% class
     else if (temp > 0.50 && temp <= 0.75) {
       color = colors[2]
     }
+    // if country falls in 75%-<99% class
     else if (temp > 0.75 && temp <= 0.99) {
       color = colors[3]
     }
+    // if country falls in 99%-<100% class
     else if (temp > 0.99) {
-      console.log(match[i][0])
       color = colors[4]
     }
-    changeColor(match[i][0], color, scale)
+    //change the color of the country
+    changeColor(match[i][0], color)
   }
 }
-  //changeColor(text, color, scale);
-
 
 /* changeColor takes a path ID and a color (hex value)
    and changes that path's fill color */
-function changeColor(id, color, value, scale) {
+function changeColor(id, color) {
+  // if the country is on the map
   if (document.getElementById(id) != null) {
+    // zet the outline to grey
     (document.getElementById(id)).style.stroke = "grey";
+    // set the fill style to given color
     (document.getElementById(id)).style.fill = color;
   }
 }
