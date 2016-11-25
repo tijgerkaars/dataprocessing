@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!--
+    Jobber Bekkers
+    10543988
+
+    has to be run on a local server voor d3 import to work
+
+    in style the last element styls the axis
+    -->
+    <title>BarChart</title>
+    <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="barchart.js"></script>
+  </head>
+  <body>
+    <style>
+
+    .chart rect {
+      fill: green;
+    }
+
+    .chart rect:hover {
+      fill: blue;
+      width: 10
+    }
+
+    .chart text {
+      fill: black;
+      font: 10px sans-serif;
+      text-anchor: end;
+    }
+
+    .axis text {
+      font: 10px sans-serif;
+    }
+
+    .axis path,
+    .axis line {
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+
+    </style>
+    <svg class="chart"></svg>
+  </body>
