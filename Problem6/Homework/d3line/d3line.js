@@ -11,7 +11,7 @@ window.onload = function() {
     var width = 1000,
         height = 300;
     // add margins to the graph
-    var margin = {top: 20, right: 50, bottom: 10, left: 50, yAx: 1},
+    var margin = {top: 20, right: 50, bottom: 10, left: 130, yAx: 1},
         width = width - margin.left - margin.right,
         height = height - margin.top - margin.bottom,
         opacitySet1 = 0.1,
@@ -27,8 +27,8 @@ window.onload = function() {
     // data processing
     /***/
     // variables
-    var bilt = [],
-        leeuwarden = [],
+    var Bilt = [],
+        Leeuwarden = [],
         yRange = [0,0],
         place = 0,
         formateren = d3.time.format("%d-%m-%Y");
@@ -62,15 +62,15 @@ window.onload = function() {
       }
       // split data on place
       if (data[i].STN == 260){
-        bilt.push(data[i])
+        Bilt.push(data[i])
       }
       else if (data[i].STN = 270) {
-        leeuwarden.push(data[i])
+        Leeuwarden.push(data[i])
       }
     }
     yRange = [(yRange[0] - margin.yAx), (yRange[1] + margin.yAx)]
-    //console.log(bilt, leeuwarden)
-    //console.log(yRange, bilt[0].dates, "\n", bilt[bilt.length - 1])
+    //console.log(Bilt, Leeuwarden)
+    //console.log(yRange, Bilt[0].dates, "\n", Bilt[Bilt.length - 1])
     /***/
 
     // scales
@@ -81,7 +81,7 @@ window.onload = function() {
     // the horizontal scaling
     var x = d3.time.scale()
         .range([0, width])
-        .domain([bilt[0].dates, bilt[bilt.length-1].dates]);
+        .domain([Bilt[0].dates, Bilt[Bilt.length-1].dates]);
 
     // define axes
     // x axis orientation and scal
@@ -143,67 +143,104 @@ window.onload = function() {
         // add a axis title
         .append("text")
           .attr("transform", "rotate(-90)")
-          .attr("x", 0)
+          .attr("x", "0")
           .attr("dy", "-3.2em")
           .style("text-anchor", "end")
           .text("temperature in °C");
 
+    chart.append("g")
+          .attr("class", "title")
+          .attr("transform", "translate(" + (width + margin.left) + "," + margin.top + ")")
+        .append("text")
+          .style("text-anchor", "end")
+          .text("temperatures in the Netherlands in 1994")
+
+    chart.append("g")
+          .attr("class", "subTitle")
+          .attr("transform", "translate(" + (width + margin.left) + "," + (margin.top + 20) + ")")
+        .append("text")
+          .style("text-anchor", "end")
+          .text("Leeuwarden")
+
     chart.append("path")
           .attr("id", "0")
           .attr("class", "nullLine")
-          .attr("d", nullLine(bilt))
+          .attr("d", nullLine(Bilt))
           .attr("transform", "translate(" + margin.left +"," + 0 + ")")
           .style("stroke", "black")
           .style("stroke", "#000")
           .style("stroke-width", "1")
           .style("shape-rendering", "crispEdges")
+          .style("opacity", "0.4")
+
+    var path = 0;
+    buttonText = d3.select("button")
+    buttonText[0][0].innerText = "Bilt"
 
     chart.append("path")
           .attr("id", "1")
           .attr("class", "line")
-          .attr("d", valueline1(bilt))
+          .attr("d", valueline1(Bilt))
           .attr("transform", "translate(" + margin.left +"," + 0 + ")")
           .style("stroke", "Blue")
           .style("opacity", opacitySet1)
-
     chart.append("path")
           .attr("id", "2")
           .attr("class", "line")
-          .attr("d", valueline2(bilt))
+          .attr("d", valueline2(Bilt))
           .attr("transform", "translate(" + margin.left +"," + 0 + ")")
           .style("stroke", "Orange")
           .style("opacity", opacitySet1)
-
     chart.append("path")
           .attr("id", "3")
           .attr("class", "line")
-          .attr("d", valueline3(bilt))
+          .attr("d", valueline3(Bilt))
           .attr("transform", "translate(" + margin.left +"," + 0 + ")")
           .style("stroke", "Red")
           .style("opacity", opacitySet1)
-
     chart.append("path")
-          .attr("id", "1")
+          .attr("id", "4")
           .attr("class", "line")
-          .attr("d", valueline1(leeuwarden))
+          .attr("d", valueline1(Leeuwarden))
           .attr("transform", "translate(" + margin.left +"," + 0 + ")")
           .style("stroke", "Blue")
           .style("opacity", opacitySet2)
-
     chart.append("path")
-          .attr("id", "2")
+          .attr("id", "5")
           .attr("class", "line")
-          .attr("d", valueline2(leeuwarden))
+          .attr("d", valueline2(Leeuwarden))
           .attr("transform", "translate(" + margin.left +"," + 0 + ")")
           .style("stroke", "Orange")
           .style("opacity", opacitySet2)
-
     chart.append("path")
-          .attr("id", "3")
+          .attr("id", "6")
           .attr("class", "line")
-          .attr("d", valueline3(leeuwarden))
+          .attr("d", valueline3(Leeuwarden))
           .attr("transform", "translate(" + margin.left +"," + 0 + ")")
           .style("stroke", "Red")
           .style("opacity", opacitySet2)
-  })
+
+    button = d3.select("button")
+        .on("click", function() {
+          if (d3.selectAll("text")[0][26].innerHTML == "Leeuwarden") {
+            d3.selectAll("text")[0][26].innerHTML = "Bilt"
+          }
+          else if (d3.selectAll("text")[0][26].innerHTML == "Bilt"){
+            d3.selectAll("text")[0][26].innerHTML = "Leeuwarden"
+          }
+          paths = d3.selectAll("path")
+          for (var i = 3; i < paths.size(); i++) {
+            if (d3.select(paths[0][i]).style("opacity") == opacitySet1) {
+              d3.select(paths[0][i]).style("opacity", opacitySet2)
+              buttonText = d3.select("button")
+              buttonText[0][0].innerText = "Bilt"
+            }
+            else if (d3.select(paths[0][i]).style("opacity") == opacitySet2) {
+              d3.select(paths[0][i]).style("opacity", opacitySet1)
+              buttonText = d3.select("button")
+              buttonText[0][0].innerText = "Leeuwarden"
+            }
+          }
+        })
+      })
 }
